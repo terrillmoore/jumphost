@@ -1,0 +1,57 @@
+##############################################################################
+#
+# Name: docker-compose.yml
+#
+# Function:
+# 	Configure the docker jumphost
+#
+# Copyright:
+#	This file copyright (c) 2017 by
+#
+#		MCCI Corporation
+#		3520 Krums Corners Road
+#		Ithaca, NY 14850
+#
+#	Distributed under the terms of the license file shipped with this
+#	collection.
+#
+# Author:
+#	Terry Moore, MCCI Corporation 
+#
+##############################################################################
+
+#
+# Note: if you are running this manually, you must set a number of variables,
+# not least JUMPHOST_VERSION, which must be the path to the top data directory
+# for these apps. 
+#
+# To get a list of all variables used in this file, use the following command:
+# sed -n -e 's/[^$]*${\([^:-}]*\)[:-}][^$]*/\1\n/gp' docker-compose.yml | sort -u
+#
+# JUMPHOST_DATA
+#       The path to the data directory. This must end with a '/', and must either
+#       be absolute or must begin with './'. (If not, you'll get parse errors.)
+#
+# JUMPHOST_PHUSION_VERSION
+#	the tag of the phusion version, 0.9.22 or similar.
+#
+version: '3.3'
+services:
+  # the ssh server
+  jumphost:
+    # environment:
+    restart: unless-stopped
+    build: 
+      context: ./jumphost
+      args:
+       - PHUSION_VERSION=${JUMPHOST_PHUSION_VERSION:-latest}
+       - SYSTEM_USER=${JUMPHOST_SSH_SYSTEM_USER:-jumpsystem}
+       - ANSIBLE_USER=${JUMPHOST_SSH_ANSIBLE_USER:-jumpansible}
+    ports:
+      - "${JUMPHOST_SSH_OUTER:-2022}:22"
+    # volumes:
+    #  - "${JUMPHOST_DATA}jumphost/service:/etc/service"
+
+    # links:
+
+### end of file ###
