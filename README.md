@@ -31,3 +31,13 @@ Then (as usual):
 $ docker-compose build
 $ docker-compose up -d
 ```
+
+## Configuration Values in `.env`
+
+Name | Default | Description
+-----|---------|------------
+`JUMPHOST_PHUSION_VERSION` | `latest` | The tag for the desired Phusion base version. For example, `0.9.22`
+`JUMPHOST_SSH_SYSTEM_USER` | `jumpsystem` | The login to be used by the embedded systems when setting up the reverse tunnel.
+`JUMPHOST_SSH_ANSIBLE_USER` | `ansible` | The login to be used by the Ansible clients. This login is possibly more fully featured, and may include the ability to sudo.
+`JUMPHOST_SSH_OUTER` | 2022 | The port number on the container system to be used for all ssh connections. If you use different port numbers, you can run multiple jumphost instances on the same host system.
+
